@@ -1,0 +1,12 @@
+# Secrets (NEVER commit these to GitHub)
+.env
+secrets/
+
+# Local Python & Backup files
+__pycache__/
+*.pyc
+*.pyo
+*.bak
+smart_city.backup.db
+.venv/
+venv/
