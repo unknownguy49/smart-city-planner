@@ -1,46 +1,47 @@
-# Smart City Planner (SCP)
+# Smart City Planner
 
 An end-to-end urban planning, regulatory compliance, and generative architectural design platform combining geospatial site intelligence, domain-grounded Retrieval-Augmented Generation (RAG) over statutory building codes, deterministic constraint solving, multi-agent stakeholder evaluation, and interactive 2D/3D spatial synthesis.
 
 ## Live Deployments
 
-* **Frontend Application:** <https://smartcityplanner.vercel.app>
+- **Frontend Application:** <https://smartcityplanner.vercel.app>
 
-* **Backend API Base URL:** <https://unknownguy494-scp-backend.hf.space/v1/>
+- **Backend API Base URL:** <https://unknownguy494-scp-backend.hf.space/v1/>
 
-* **Interactive API Documentation (Swagger/OpenAPI):** <https://unknownguy494-scp-backend.hf.space/v1/docs>
+- **Interactive API Documentation (Swagger/OpenAPI):** <https://unknownguy494-scp-backend.hf.space/v1/docs>
+
+- **Android Mobile App (Direct APK Download):** Download [`SmartCityPlanner-v1.0.apk`](https://github.com/unknownguy49/smart-city-planner/raw/main/releases/SmartCityPlanner-v1.0.apk) (Packaged via **Capacitor** with native Firebase Auth, connected directly to the live cloud backend—enable _"Install from unknown sources"_ on Android to install).
 
 ## Table of Contents
 
-* [System Overview](#system-overview)
+- [System Overview](#system-overview)
 
-* [Architectural Design](#architectural-design)
+- [Architectural Design](#architectural-design)
 
-* [System Data Flow](#system-data-flow)
+- [System Data Flow](#system-data-flow)
 
-* [Core Subsystems](#core-subsystems)
+- [Core Subsystems](#core-subsystems)
+  - [1. Geospatial Site Intelligence and OSM Extraction](#1-geospatial-site-intelligence-and-osm-extraction)
 
-  * [1. Geospatial Site Intelligence and OSM Extraction](#1-geospatial-site-intelligence-and-osm-extraction)
+  - [2. Jurisdiction-Aware Regulatory RAG and Rule Extraction](#2-jurisdiction-aware-regulatory-rag-and-rule-extraction)
 
-  * [2. Jurisdiction-Aware Regulatory RAG and Rule Extraction](#2-jurisdiction-aware-regulatory-rag-and-rule-extraction)
+  - [3. Deterministic Constraint and Scoring Engines](#3-deterministic-constraint-and-scoring-engines)
 
-  * [3. Deterministic Constraint and Scoring Engines](#3-deterministic-constraint-and-scoring-engines)
+  - [4. Multi-Agent Stakeholder Evaluation Pipeline](#4-multi-agent-stakeholder-evaluation-pipeline)
 
-  * [4. Multi-Agent Stakeholder Evaluation Pipeline](#4-multi-agent-stakeholder-evaluation-pipeline)
+  - [5. Generative Space Programming, 2D Floor Plans, and 3D Massing](#5-generative-space-programming-2d-floor-plans-and-3d-massing)
 
-  * [5. Generative Space Programming, 2D Floor Plans, and 3D Massing](#5-generative-space-programming-2d-floor-plans-and-3d-massing)
+  - [6. Scenario Simulation and Dossier Export](#6-scenario-simulation-and-dossier-export)
 
-  * [6. Scenario Simulation and Dossier Export](#6-scenario-simulation-and-dossier-export)
+- [Repository Structure](#repository-structure)
 
-* [Repository Structure](#repository-structure)
+- [Technology Stack](#technology-stack)
 
-* [Technology Stack](#technology-stack)
+- [API Reference](#api-reference)
 
-* [API Reference](#api-reference)
+- [Local Setup and Execution](#local-setup-and-execution)
 
-* [Local Setup and Execution](#local-setup-and-execution)
-
-* [Environment Variables](#environment-variables)
+- [Environment Variables](#environment-variables)
 
 ## System Overview
 
@@ -50,7 +51,7 @@ Smart City Planner consolidates these stages into a unified computational pipeli
 
 1. Extracts surrounding road networks, abutting road widths, and civic infrastructure via OpenStreetMap (OSM).
 
-2. Retrieves and parses applicable statutory building codes (specifically the *Andhra Pradesh Final Standardized Development and Building Regulations 2024* and *G.O.Ms.No.119*).
+2. Retrieves and parses applicable statutory building codes (specifically the _Andhra Pradesh Final Standardized Development and Building Regulations 2024_ and _G.O.Ms.No.119_).
 
 3. Computes deterministic buildable envelopes (front/rear/side setbacks, Floor Area Ratio / FSI, ground coverage limits, maximum permissible height, and parking requirements).
 
@@ -62,9 +63,9 @@ Smart City Planner consolidates these stages into a unified computational pipeli
 
 To prevent Large Language Models from hallucinating spatial dimensions or violating hard statutory limits, the backend enforces a strict separation between semantic reasoning and deterministic computation:
 
-* **Semantic and Generative Layer:** Handles unstructured statutory PDF ingestion, jurisdiction filtering, natural-language clause extraction (`rule_extractor.py`), multi-perspective qualitative audits (`agents/`), and workspace-grounded conversational queries (`chatbot_service.py`).
+- **Semantic and Generative Layer:** Handles unstructured statutory PDF ingestion, jurisdiction filtering, natural-language clause extraction (`rule_extractor.py`), multi-perspective qualitative audits (`agents/`), and workspace-grounded conversational queries (`chatbot_service.py`).
 
-* **Deterministic Symbolic Layer:** Executes all polygon area calculations, road-width-dependent setback deductions, net buildable footprint geometry, structural heuristics, multi-criteria weighted scoring (`scoring_engine.py`), and room-packing space schedules (`space_program_service.py`) algorithmically.
+- **Deterministic Symbolic Layer:** Executes all polygon area calculations, road-width-dependent setback deductions, net buildable footprint geometry, structural heuristics, multi-criteria weighted scoring (`scoring_engine.py`), and room-packing space schedules (`space_program_service.py`) algorithmically.
 
 ## System Data Flow
 
@@ -107,62 +108,64 @@ To prevent Large Language Models from hallucinating spatial dimensions or violat
 
 ### 1. Geospatial Site Intelligence and OSM Extraction
 
-* **Polygon Digitization:** Users draw custom land parcels directly on a Leaflet map interface (`MapSelector.tsx`, `polygonStore.ts`) or search target coordinates (`SearchLocation.tsx`).
+- **Polygon Digitization:** Users draw custom land parcels directly on a Leaflet map interface (`MapSelector.tsx`, `polygonStore.ts`) or search target coordinates (`SearchLocation.tsx`).
 
-* **Contextual Enrichment:** `osm_service.py` and `site_context_service.py` query surrounding road classifications, abutting road widths, transit nodes, utilities, and nearby civic infrastructure (`NearbyInfrastructure.tsx`).
+- **Contextual Enrichment:** `osm_service.py` and `site_context_service.py` query surrounding road classifications, abutting road widths, transit nodes, utilities, and nearby civic infrastructure (`NearbyInfrastructure.tsx`).
 
-* **Site Suitability Analysis:** `site_suitability_service.py` evaluates topological and contextual fitness prior to building parameterization.
+- **Site Suitability Analysis:** `site_suitability_service.py` evaluates topological and contextual fitness prior to building parameterization.
 
 ### 2. Jurisdiction-Aware Regulatory RAG and Rule Extraction
 
-* **Statutory Corpus:** Indexed against building code documents located in `backend/app/rag/data/Building_Regulations/`, including the *2024 Andhra Pradesh Final Standardized Development and Building Regulations* and *G.O.Ms.No.119 (AP Building Rules-2017)*.
+- **Statutory Corpus:** Indexed against building code documents located in `backend/app/rag/data/Building_Regulations/`, including the _2024 Andhra Pradesh Final Standardized Development and Building Regulations_ and _G.O.Ms.No.119 (AP Building Rules-2017)_.
 
-* **Jurisdiction Filtering:** `jurisdiction_filter.py` and `regulation_applicability.py` isolate regulatory clauses applicable to the parcel's municipality, land-use zone, plot area, and abutting road width.
+- **Jurisdiction Filtering:** `jurisdiction_filter.py` and `regulation_applicability.py` isolate regulatory clauses applicable to the parcel's municipality, land-use zone, plot area, and abutting road width.
 
-* **Structured Rule Extraction:** `rule_extractor.py` converts retrieved statutory passages into structured rule schemas (setbacks, ground coverage caps, FAR/FSI limits, and maximum height restrictions) with source citations.
+- **Structured Rule Extraction:** `rule_extractor.py` converts retrieved statutory passages into structured rule schemas (setbacks, ground coverage caps, FAR/FSI limits, and maximum height restrictions) with source citations.
 
 ### 3. Deterministic Constraint and Scoring Engines
 
-* **Constraint Solver (`constraint_engine.py`):** Evaluates extracted regulatory parameters against the user's drawn polygon geometry to compute net buildable area, maximum floor plates, and compliance pass/fail flags.
+- **Constraint Solver (`constraint_engine.py`):** Evaluates extracted regulatory parameters against the user's drawn polygon geometry to compute net buildable area, maximum floor plates, and compliance pass/fail flags.
 
-* **Building Profiling (`building_profile_service.py`):** Computes occupancy loads, structural typology baselines, vertical circulation cores, and MEP requirements based on project classification (residential, commercial, mixed-use, institutional).
+- **Building Profiling (`building_profile_service.py`):** Computes occupancy loads, structural typology baselines, vertical circulation cores, and MEP requirements based on project classification (residential, commercial, mixed-use, institutional).
 
-* **Scoring Engine (`scoring_engine.py`):** Calculates normalized performance metrics across spatial efficiency, regulatory adherence, environmental resilience, and civic impact.
+- **Scoring Engine (`scoring_engine.py`):** Calculates normalized performance metrics across spatial efficiency, regulatory adherence, environmental resilience, and civic impact.
 
 ### 4. Multi-Agent Stakeholder Evaluation Pipeline
 
 Orchestrated by `backend/app/agents/planner.py`, five domain-specific agents audit the site context, deterministic constraints, and proposed design configuration:
 
-| Agent Module | Domain | Evaluation Scope | 
-| ----- | ----- | ----- | 
-| `architecture_agent.py` | Spatial Design and Form | Massing proportions, solar orientation, spatial hierarchy, circulation efficiency, and programmatic zoning. | 
-| `civil_agent.py` | Structural and Site Engineering | Site feasibility, structural grid regularity, utility load demand, drainage, and access road capacity. | 
-| `municipal_agent.py` | Statutory Compliance | Audit against extracted DCR clauses, setback boundaries, FAR caps, fire tender access, and parking ratios. | 
-| `sustainability_agent.py` | Environmental Performance | Solar heat gain, natural cross-ventilation potential, green cover ratio, rainwater harvesting, and embodied carbon heuristics. | 
-| `citizen_agent.py` | Socio-Civic Impact | Neighborhood shadow impact, local traffic congestion delta, public realm integration, and community livability. | 
+| Agent Module              | Domain                          | Evaluation Scope                                                                                                               |
+| ------------------------- | ------------------------------- | ------------------------------------------------------------------------------------------------------------------------------ |
+| `architecture_agent.py`   | Spatial Design and Form         | Massing proportions, solar orientation, spatial hierarchy, circulation efficiency, and programmatic zoning.                    |
+| `civil_agent.py`          | Structural and Site Engineering | Site feasibility, structural grid regularity, utility load demand, drainage, and access road capacity.                         |
+| `municipal_agent.py`      | Statutory Compliance            | Audit against extracted DCR clauses, setback boundaries, FAR caps, fire tender access, and parking ratios.                     |
+| `sustainability_agent.py` | Environmental Performance       | Solar heat gain, natural cross-ventilation potential, green cover ratio, rainwater harvesting, and embodied carbon heuristics. |
+| `citizen_agent.py`        | Socio-Civic Impact              | Neighborhood shadow impact, local traffic congestion delta, public realm integration, and community livability.                |
 
 Outputs are aggregated into an executive summary (`ExecutiveSummary.tsx`), per-agent scorecards (`ScoreCard.tsx`, `AgentCard.tsx`), and remediation recommendations (`recommendation_service.py`).
 
 ### 5. Generative Space Programming, 2D Floor Plans, and 3D Massing
 
-* **Space Programming (`space_program_service.py`, `design_service.py`):** Partitions gross floor area into functional room schedules, corridors, vertical cores, and open spaces aligned to structural grids.
+- **Space Programming (`space_program_service.py`, `design_service.py`):** Partitions gross floor area into functional room schedules, corridors, vertical cores, and open spaces aligned to structural grids.
 
-* **2D CAD Floor Plan Viewer (`FloorPlan2D.tsx`, `architectureLayout.ts`):** Renders scaled architectural floor layouts displaying room allocations, dimensions, circulation paths, and setback envelopes.
+- **2D CAD Floor Plan Viewer (`FloorPlan2D.tsx`, `architectureLayout.ts`):** Renders scaled architectural floor layouts displaying room allocations, dimensions, circulation paths, and setback envelopes.
 
-* **3D Building Massing (`Building3D.tsx`, `DesignMap.tsx`):** Extrudes multi-story building volumes onto the geospatial parcel for spatial bulk and height inspection.
+- **3D Building Massing (`Building3D.tsx`, `DesignMap.tsx`):** Extrudes multi-story building volumes onto the geospatial parcel for spatial bulk and height inspection.
 
 ### 6. Scenario Simulation and Dossier Export
 
-* **Intervention Scenario Lab (`ScenarioPanel.tsx`, `scenario_generator.py`, `scenario_evaluator.py`):** Allows planners to apply policy and design interventions (`intervention_service.py`)—such as FAR bonuses, green roof mandates, transit-oriented density adjustments, or setback relaxations—and compare baseline versus modified scorecards.
+- **Intervention Scenario Lab (`ScenarioPanel.tsx`, `scenario_generator.py`, `scenario_evaluator.py`):** Allows planners to apply policy and design interventions (`intervention_service.py`)—such as FAR bonuses, green roof mandates, transit-oriented density adjustments, or setback relaxations—and compare baseline versus modified scorecards.
 
-* **Workspace-Grounded Copilot (`ChatbotPanel.tsx`, `chatbot_service.py`, `speech.py`):** A text and voice-enabled assistant wired into the active project's serialized workspace state, agent critiques, and regulatory vector store.
+- **Workspace-Grounded Copilot (`ChatbotPanel.tsx`, `chatbot_service.py`, `speech.py`):** A text and voice-enabled assistant wired into the active project's serialized workspace state, agent critiques, and regulatory vector store.
 
-* **PDF Dossier Export (`reportPdf.ts`, `ReportSnapshotBridge.tsx`, `ReportVisualGallery.tsx`):** Captures 2D/3D canvas snapshots alongside multi-agent evaluations and compiles a formatted multi-page PDF feasibility report.
+- **PDF Dossier Export (`reportPdf.ts`, `ReportSnapshotBridge.tsx`, `ReportVisualGallery.tsx`):** Captures 2D/3D canvas snapshots alongside multi-agent evaluations and compiles a formatted multi-page PDF feasibility report.
 
 ## Repository Structure
 
 ```
 .
+├── releases/
+│   └── SmartCityPlanner-v1.0.apk           # Pre-built standalone Android APK
 ├── backend/                                # FastAPI Application & AI/Symbolic Engines
 │   ├── app.py                              # Application entrypoint
 │   ├── requirements.txt                    # Python dependencies
@@ -200,7 +203,6 @@ Outputs are aggregated into an executive summary (`ExecutiveSummary.tsx`), per-a
 │       │   ├── retriever.py                # Hybrid semantic + metadata retriever
 │       │   ├── query.py                    # Query formulation & expansion
 │       │   ├── rule_extractor.py           # LLM-guided structured regulation parser
-│       │   ├── chroma/                     # Persisted ChromaDB vector index
 │       │   └── data/Building_Regulations/  # Source statutory PDFs (AP Building Rules)
 │       └── services/                       # Deterministic Math & Domain Services
 │           ├── constraint_engine.py        # Setback, FAR, coverage & height solver
@@ -222,10 +224,12 @@ Outputs are aggregated into an executive summary (`ExecutiveSummary.tsx`), per-a
 │           ├── email_service.py            # Notification dispatch service
 │           └── config.py                   # Centralized environment & model settings
 │
-└── frontend/                               # Next.js (App Router) + TypeScript Client
+└── frontend/                               # Next.js (App Router) + Capacitor Android Client
     ├── package.json                        # Node dependencies & scripts
     ├── tsconfig.json                       # TypeScript compiler configuration
     ├── next.config.ts                      # Next.js runtime configuration
+    ├── capacitor.config.ts                 # Capacitor native Android wrapper configuration
+    ├── android/                            # Native Android Gradle project
     ├── app/                                # Next.js App Router Pages
     │   ├── page.tsx                        # Landing & platform overview
     │   ├── login/ & signup/                # Firebase authentication flows
@@ -256,42 +260,42 @@ Outputs are aggregated into an executive summary (`ExecutiveSummary.tsx`), per-a
 
 ## Technology Stack
 
-* **Frontend:** Next.js (App Router), React, TypeScript, Tailwind CSS, Leaflet / React-Leaflet, HTML5 Canvas / SVG Parametric Drafting, WebGL 3D Massing, Firebase Client SDK, Client-side PDF Generation.
+- **Frontend:** Next.js (App Router), React, TypeScript, Tailwind CSS, Leaflet / React-Leaflet, HTML5 Canvas / SVG Parametric Drafting, WebGL 3D Massing, Firebase Client SDK, Client-side PDF Generation.
 
-* **Backend:** Python 3.10+, FastAPI, Uvicorn, Pydantic v2, SQLAlchemy ORM, Firebase Admin SDK.
+- **Backend:** Python 3.10+, FastAPI, Uvicorn, Pydantic v2, SQLAlchemy ORM, Firebase Admin SDK.
 
-* **AI, RAG, and Geospatial:** ChromaDB, PyPDF, LLM Agent Orchestration, Shapely / GeoJSON Geometry Processing, OpenStreetMap Overpass API.
+- **AI, RAG, and Geospatial:** ChromaDB, PyPDF, LLM Agent Orchestration, Shapely / GeoJSON Geometry Processing, OpenStreetMap Overpass API.
 
-* **Deployment Infrastructure:** Vercel (Frontend), Hugging Face Spaces (Backend API).
+- **Deployment Infrastructure:** Vercel (Frontend), Hugging Face Spaces (Backend API).
 
 ## API Reference
 
 All endpoints are served under the `/v1` API prefix (Production: `https://unknownguy494-scp-backend.hf.space/v1/`).
 
-| Route Prefix | Module | Description | 
-| ----- | ----- | ----- | 
-| `/projects` | `projects.py` | Create, list, retrieve, and delete urban planning projects. | 
-| `/workspace` | `project_workspace.py` | Load and synchronize unified workspace state (parcel, constraints, scores, designs). | 
-| `/land` | `land.py` | Compute parcel geometry metrics, bounding boxes, and site suitability profiles. | 
-| `/osm` | `osm.py` | Query surrounding OpenStreetMap road networks, abutting road widths, and POIs. | 
-| `/planner` | `planner.py` | Execute regulatory RAG retrieval, deterministic constraint solving, and the 5-agent audit. | 
-| `/design` | `design.py` | Generate space programs, 2D room layouts, and 3D massing parameters. | 
-| `/scenario` | `scenario.py` | Simulate and evaluate alternative urban policy and design intervention scenarios. | 
-| `/chatbot` | `chatbot.py` | Query the workspace-aware regulatory and planning copilot. | 
-| `/speech` | `speech.py` | Transcribe audio inputs into planning queries. | 
-| `/persistence` | `persistence.py` | Persist visual report snapshots and historical evaluation runs. | 
+| Route Prefix   | Module                 | Description                                                                                |
+| -------------- | ---------------------- | ------------------------------------------------------------------------------------------ |
+| `/projects`    | `projects.py`          | Create, list, retrieve, and delete urban planning projects.                                |
+| `/workspace`   | `project_workspace.py` | Load and synchronize unified workspace state (parcel, constraints, scores, designs).       |
+| `/land`        | `land.py`              | Compute parcel geometry metrics, bounding boxes, and site suitability profiles.            |
+| `/osm`         | `osm.py`               | Query surrounding OpenStreetMap road networks, abutting road widths, and POIs.             |
+| `/planner`     | `planner.py`           | Execute regulatory RAG retrieval, deterministic constraint solving, and the 5-agent audit. |
+| `/design`      | `design.py`            | Generate space programs, 2D room layouts, and 3D massing parameters.                       |
+| `/scenario`    | `scenario.py`          | Simulate and evaluate alternative urban policy and design intervention scenarios.          |
+| `/chatbot`     | `chatbot.py`           | Query the workspace-aware regulatory and planning copilot.                                 |
+| `/speech`      | `speech.py`            | Transcribe audio inputs into planning queries.                                             |
+| `/persistence` | `persistence.py`       | Persist visual report snapshots and historical evaluation runs.                            |
 
 ## Local Setup and Execution
 
 ### Prerequisites
 
-* Node.js 18+ and npm
+- Node.js 18+ and npm
 
-* Python 3.10+
+- Python 3.10+
 
-* Firebase project credentials
+- Firebase project credentials
 
-* LLM / Embedding provider API key
+- LLM / Embedding provider API key
 
 ### 1. Backend Setup
 
@@ -325,28 +329,36 @@ Local frontend client will be accessible at `http://localhost:3000`.
 
 ### `backend/.env`
 
-```
-OPENAI_API_KEY=your_llm_api_key
-EMBEDDING_MODEL=text-embedding-3-small
-LLM_MODEL=gpt-4o-mini
+```env
+GROQ_API_KEY=your_groq_api_key
+GEMINI_API_KEY=your_gemini_api_key
+EMBEDDING_MODEL=sentence-transformers/all-MiniLM-L6-v2
 
 CHROMA_PERSIST_DIR=./app/rag/chroma
-DATABASE_URL=sqlite:///./urban_planner.db
+DATABASE_URL=postgresql+psycopg://user:password@host/dbname?sslmode=require
 
-FIREBASE_CREDENTIALS_PATH=./firebase-service-account.json
+# Use path locally or raw JSON string in cloud deployment
+FIREBASE_SERVICE_ACCOUNT_PATH=./secrets/firebase-service-account.json
+# FIREBASE_SERVICE_ACCOUNT_JSON={"type":"service_account",...}
 
+FRONTEND_ORIGINS=http://localhost:3000,http://localhost:3001,https://vercel.app,https://localhost,http://localhost,capacitor://localhost
 ```
 
 ### `frontend/.env.local`
 
-```
-NEXT_PUBLIC_API_URL=https://unknownguy494-scp-backend.hf.space/v1
+```env
+NEXT_PUBLIC_API_BASE_URL=https://hf.space
 
 NEXT_PUBLIC_FIREBASE_API_KEY=your_firebase_api_key
-NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN=your_project.firebaseapp.com
+NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN=your_firebase_auth_domain
 NEXT_PUBLIC_FIREBASE_PROJECT_ID=your_project_id
-NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET=your_project.appspot.com
+NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET=your_storage_bucket
 NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID=your_sender_id
 NEXT_PUBLIC_FIREBASE_APP_ID=your_app_id
-
 ```
+
+## Acknowledgements
+
+This project is developed as a university capstone project and is not affiliated with any government or municipal authority. The statutory building codes referenced are publicly available documents, and the system is intended for educational and research purposes only. The contributors acknowledge the use of open-source libraries and frameworks, including FastAPI, Next.js, Leaflet, ChromaDB, and others, which have been instrumental in the development of this platform.
+
+Contributors: [Adityaraj Singh Rathore](https://github.com/adityaraj-25), [Aryan Puri](https://github.com/Aryan-Puri-23), [Dibyadyuti Dutta](https://github.com/unknownguy49), [Vishal Ch](https://github.com/Vishalch118)
